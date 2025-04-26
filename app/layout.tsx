@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/provider/theme-provider"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
 import { QueryProvider } from "@/components/provider/query-provider"
+import { Toaster as SonnerToaster } from "sonner"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,6 +47,7 @@ export default function RootLayout({
           </SessionProvider>
         </QueryProvider>
         <Toaster />
+        <SonnerToaster position="top-right" richColors />
       </body>
     </html>
   )

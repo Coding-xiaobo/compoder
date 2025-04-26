@@ -6,15 +6,29 @@ import { Loader2 } from "lucide-react"
 import { LoginFormProps } from "./interface"
 import { Logo } from "../Logo"
 import { techIcons } from "./helpers"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useState } from "react"
 
 const LoginForm = ({
   onSubmit,
   onGithubSignIn,
+  onCredentialsSignIn,
   loading = false,
 }: LoginFormProps) => {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [formLoading, setFormLoading] = useState(false)
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit?.()
+
+    if (onCredentialsSignIn) {
+      setFormLoading(true)
+      onCredentialsSignIn({ username, password })
+    } else if (onSubmit) {
+      onSubmit()
+    }
   }
 
   return (
@@ -63,53 +77,56 @@ const LoginForm = ({
               />
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              Compoder
+              编解码器
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground/90">
-              Generate component code in seconds.
+              在几秒钟内生成组件代码。
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username">用户名</Label>
+                <Input
+                  id="username"
+                  placeholder="请输入用户名"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  disabled={loading || formLoading}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">密码</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="请输入密码"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading || formLoading}
+                  required
+                />
+              </div>
+            </div>
+
             <Button
-              type="button"
-              variant="default"
-              className="w-full h-10 sm:h-12 font-medium bg-primary hover:bg-primary/90 
-                transform hover:-translate-y-0.5 transition-all duration-200 
-                shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)]"
-              onClick={onGithubSignIn}
-              disabled={loading}
+              type="submit"
+              className="w-full h-10 sm:h-12 font-medium"
+              disabled={loading || formLoading}
             >
-              {loading ? (
+              {formLoading ? (
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              ) : (
-                <svg
-                  viewBox="0 0 24 24"
-                  width="20"
-                  height="20"
-                  className="mr-3"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-                </svg>
-              )}
-              Sign in with Github
+              ) : null}
+              登录
             </Button>
           </form>
 
           <div className="text-center space-y-3 sm:space-y-4 text-xs sm:text-sm text-muted-foreground/80">
-            <p className="font-medium">
-              Join Compoder,
-              <span className="text-primary">
-                {" "}
-                it&apos;s free & open source!
-              </span>
-            </p>
             <p className="leading-relaxed">
-              Your Stack, Your UI - AI-Powered Component Code Generator for
-              Every
-              <span className="text-primary"> Frontend Engineer</span>
+              您的技术栈，您的 UI - 为每位
+              <span className="text-primary"> 前端工程师</span>提供的 AI 驱动组件代码生成器
             </p>
           </div>
 

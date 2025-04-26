@@ -28,6 +28,8 @@ function MainLayoutContent({
   const routes = useRoutes()
   const { openModal } = useProviderModelModal() // now it's safe to call
 
+  console.log("主布局内容渲染，用户数据:", user);
+
   // handle nav item click
   const handleNavItemClick = useCallback(
     (url: string) => {
@@ -63,6 +65,8 @@ export default function MainLayout({
 }) {
   const { status, data } = useSession()
 
+  console.log("主布局初始化，会话状态:", status, "会话数据:", data);
+
   const user = {
     name: data?.user?.name || "",
     email: data?.user?.email || "",
@@ -70,16 +74,20 @@ export default function MainLayout({
   }
 
   useEffect(() => {
+    console.log("主布局会话状态变化:", status);
     if (status === "unauthenticated") {
+      console.log("用户未认证，将重定向到登录页面");
       redirect("/login")
     }
   }, [status])
 
   // Show loading state while checking authentication status
   if (status === "loading") {
+    console.log("主布局正在加载会话...");
     return <Loading fullscreen />
   }
 
+  console.log("主布局渲染，用户已认证");
   return (
     <ProviderModelModalProvider>
       <MainLayoutContent user={user}>{children}</MainLayoutContent>

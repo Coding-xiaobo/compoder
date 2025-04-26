@@ -13,7 +13,8 @@
     "build-storybook": "storybook build",
     "migrate-codegen": "tsx lib/db/codegen/migrate.ts",
     "build:docker": "docker build -t compoder:latest .",
-    "build:artifacts-docker": "bash script/build-artifacts-docker.sh"
+    "build:artifacts-docker": "bash script/build-artifacts-docker.sh",
+    "create-user": "node scripts/create-user.js"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
@@ -42,9 +43,11 @@
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.62.7",
     "@tldraw/tldraw": "2.0.0-alpha.17",
+    "@types/bcryptjs": "^3.0.0",
     "ai": "^4.0.18",
     "autosize": "^6.0.1",
     "axios": "^1.7.9",
+    "bcryptjs": "^3.0.2",
     "canvas-size": "^1.2.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -59,6 +62,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-resizable-panels": "^2.1.7",
+    "sonner": "^2.0.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
