@@ -1,10 +1,10 @@
 export interface CodegenRule {
   type:
-    | "public-components"
-    | "styles"
-    | "private-components"
-    | "file-structure"
-    | "attention-rules"
+  | "public-components"
+  | "styles"
+  | "private-components"
+  | "file-structure"
+  | "attention-rules"
   description: string
   prompt?: string // only used when type is "styles" | "file-structure" | "special-attention"
   dataSet?: string[] // only used when type is "public-components"
@@ -22,7 +22,7 @@ export interface CodegenRule {
 export interface Codegen {
   title: string
   description: string
-  fullStack: "React" | "Vue"
+  fullStack: "React" | "Vue" | "Angular"
   guides: string[]
   model: string
   codeRendererUrl: string

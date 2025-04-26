@@ -52,7 +52,7 @@ const CodegenSchema = new mongoose.Schema<Codegen>(
     },
     fullStack: {
       type: String,
-      enum: ["React", "Vue"],
+      enum: ["React", "Vue", "Angular"],
       required: true,
     },
     guides: {

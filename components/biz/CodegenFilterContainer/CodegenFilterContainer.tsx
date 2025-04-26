@@ -57,6 +57,9 @@ export function CodegenFilterContainer({
             <TabsTrigger value="Vue" className="flex-1 sm:flex-none">
               Vue
             </TabsTrigger>
+            <TabsTrigger value="Angular" className="flex-1 sm:flex-none">
+              Angular
+            </TabsTrigger>
           </TabsList>
         </Tabs>
 

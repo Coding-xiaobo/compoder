@@ -6,7 +6,7 @@ declare namespace CodegenApi {
     page: number
     pageSize: number
     name?: string
-    fullStack?: "React" | "Vue"
+    fullStack?: "React" | "Vue" | "Angular"
   }
   // codegen list response
   export interface ListResponse {

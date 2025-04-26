@@ -402,44 +402,6 @@
                         }
                     }
                 }
-            },
-            {
-                "type": "attention-rules",
-                "description": "Attention rules for the code generator",
-                "prompt": "Only use the following npm packages in the generated code: @angular/core, @angular/common, @angular/forms, @angular/material. Do not import or use any other packages unless explicitly mentioned in the requirements. Always use Angular's recommended patterns and best practices."
-            }
-        ]
-    },
-    {
-        "title": "Angular Codegen",
-        "description": "Code generator based on Angular",
-        "fullStack": "Angular",
-        "guides": [
-            "Generate a login page",
-            "Generate a Table component, include 3 columns: name, age, address"
-        ],
-        "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3003",
-        "rules": [
-            {
-                "type": "public-components",
-                "description": "Define which public components to use",
-                "dataSet": [
-                    "@angular/core",
-                    "@angular/common",
-                    "@angular/forms",
-                    "@angular/material"
-                ]
-            },
-            {
-                "type": "file-structure",
-                "description": "Define the file structure for the project",
-                "prompt": "Output component code in XML format as follows: <ComponentArtifact name=\"ComponentName\"><ComponentFile fileName=\"component-name.component.ts\" isEntryFile=\"true\">import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-component-name',\n  templateUrl: './component-name.component.html',\n  styleUrls: ['./component-name.component.scss']\n})\nexport class ComponentNameComponent implements OnInit {\n  // Input properties with default values\n  @Input() propName: type = defaultValue;\n  \n  // Output events\n  @Output() eventName = new EventEmitter<eventType>();\n  \n  // Component state\n  property: type;\n  \n  constructor() { }\n  \n  ngOnInit(): void {\n    // Initialization logic\n  }\n  \n  // Component methods\n  methodName(): returnType {\n    // Method implementation\n  }\n}</ComponentFile><ComponentFile fileName=\"component-name.component.html\"><!-- Component template -->\n<div class=\"component-container\">\n  <!-- Component content -->\n</div></ComponentFile><ComponentFile fileName=\"component-name.component.scss\">/* Component styles */\n.component-container {\n  /* Container styles */\n}</ComponentFile></ComponentArtifact>\n\nIMPORTANT RULES:\n1. Follow Angular style guide and best practices\n2. Use TypeScript features properly\n3. Keep components focused on a single responsibility"
-            },
-            {
-                "type": "attention-rules",
-                "description": "Attention rules for the code generator",
-                "prompt": "Only use the following npm packages in the generated code: @angular/core, @angular/common, @angular/forms, @angular/material. Do not import or use any other packages unless explicitly mentioned in the requirements. Always use Angular's recommended patterns and best practices."
             }
         ]
     }
