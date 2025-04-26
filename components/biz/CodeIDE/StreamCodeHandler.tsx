@@ -36,14 +36,47 @@ export const StreamCodeHandler = ({
     StreamCodeIDEProps["onCompoderThinkingProcess"]
   >(onCompoderThinkingProcess)
 
+  // 添加防抖计时器，减少过于频繁的更新
+  const updateThrottleTimerRef = useRef<NodeJS.Timeout | null>(null)
+  // 添加缓存最新内容的引用
+  const latestContentRef = useRef<string>("")
+
   currentUpdateFileContentRef.current = updateFileContent
   currentFileRef.current = currentFile
   currentOnThinkingProcess.current = onCompoderThinkingProcess
+
+  // 防抖更新文件内容
+  const throttleUpdateFileContent = (fileId: string, content: string) => {
+    latestContentRef.current = content
+
+    // 如果已经有计时器，清除它
+    if (updateThrottleTimerRef.current) {
+      clearTimeout(updateThrottleTimerRef.current)
+    }
+
+    // 设置新的计时器，16ms（约一帧的时间）
+    updateThrottleTimerRef.current = setTimeout(() => {
+      if (currentUpdateFileContentRef.current) {
+        startTransition(() =>
+          currentUpdateFileContentRef.current?.(fileId, latestContentRef.current)
+        )
+      }
+      updateThrottleTimerRef.current = null
+    }, 16)
+  }
 
   useEffect(() => {
     if (!isStreaming || !readableStream || handleFlagRef.current) return
 
     handleFlagRef.current = true
+
+    // 重置状态
+    parseStatusRef.current = {
+      content: "",
+      status: "beforeArtifactStart",
+    }
+    latestContentRef.current = ""
+
     parseStreamingArtifact({
       stream: readableStream,
       onChunk(chunk) {
@@ -58,6 +91,12 @@ export const StreamCodeHandler = ({
       onArtifactEnd(artifact) {
         setFiles(artifact.files)
         handleFlagRef.current = false
+
+        // 清理防抖计时器
+        if (updateThrottleTimerRef.current) {
+          clearTimeout(updateThrottleTimerRef.current)
+          updateThrottleTimerRef.current = null
+        }
       },
       onFileStart(file, artifact) {
         setFiles(artifact.files)
@@ -66,15 +105,21 @@ export const StreamCodeHandler = ({
       onFileContent(content, file) {
         if (!currentFileRef.current || currentFileRef.current.id !== file.id)
           return
-        startTransition(() =>
-          currentUpdateFileContentRef.current?.(file.id, content),
-        )
+
+        // 使用防抖更新内容而不是直接更新
+        throttleUpdateFileContent(file.id, content)
       },
       onError(error) {
         handleFlagRef.current = false
         parseStatusRef.current = {
           content: "",
           status: "beforeArtifactStart",
+        }
+
+        // 清理防抖计时器
+        if (updateThrottleTimerRef.current) {
+          clearTimeout(updateThrottleTimerRef.current)
+          updateThrottleTimerRef.current = null
         }
       },
       onEnd() {
@@ -83,8 +128,22 @@ export const StreamCodeHandler = ({
           content: "",
           status: "beforeArtifactStart",
         }
+
+        // 清理防抖计时器
+        if (updateThrottleTimerRef.current) {
+          clearTimeout(updateThrottleTimerRef.current)
+          updateThrottleTimerRef.current = null
+        }
       },
     })
+
+    // 清理函数
+    return () => {
+      if (updateThrottleTimerRef.current) {
+        clearTimeout(updateThrottleTimerRef.current)
+        updateThrottleTimerRef.current = null
+      }
+    }
   }, [isStreaming, readableStream])
 
   return children
