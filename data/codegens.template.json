@@ -419,7 +419,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3003",
+        "codeRendererUrl": "http://localhost:3006",
         "rules": [
             {
                 "type": "public-components",
